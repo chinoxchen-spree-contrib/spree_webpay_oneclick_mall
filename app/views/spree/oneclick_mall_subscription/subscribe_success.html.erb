@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-md-12">
+    La subscripción a Oneclick resultó exitosa. Ahora puede continuar con el pago.
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <%= link_to Spree.t("continue"), checkout_state_path(current_order.state), class: "btn btn-primary" %>
+  </div>
+  <div class="col-md-3">
+    <%= link_to Spree.t("back"), checkout_state_path(:payment), class: "btn btn-info" %>
+  </div>
+</div>

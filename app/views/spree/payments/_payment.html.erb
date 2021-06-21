@@ -1,0 +1,49 @@
+<% source = payment.source %>
+<% if source.is_a?(Spree::CreditCard) %>
+  <span class="cc-type">
+    <% unless (cc_type = source.cc_type).blank? %>
+      <%= image_tag "credit_cards/icons/#{cc_type}.png" %>
+    <% end %>
+    <% if source.last_digits %>
+      <%= Spree.t(:ending_in) %> <%= source.last_digits %>
+    <% end %>
+  </span>
+  <br />
+  <span class="full-name"><%= source.name %></span>
+<% else %>
+  <% if payment.oneclick_mall? && payment.webpay_params.present? %>
+    <dl>
+      <dt><%= Spree.t("oneclick_name_store") %></dt>
+      <dd><%= @order.store.name rescue Spree::Config.site_name %></dd>
+
+      <dt><%= Spree.t("oneclick_store_url") %></dt>
+      <dd><%= @order.store.url %></dd>
+
+      <dt><%= Spree.t("oneclick_buyer_name") %></dt>
+      <dd><%= @order.webpay_client_name %></dd>
+
+      <dt><%= Spree.t("oneclick_order_number") %></dt>
+      <dd><%= @order.number %></dd>
+
+      <dt><%= Spree.t("oneclick_payment_amount") %></dt>
+      <dd><%= Spree::Money.new(payment.amount) %></dd>
+
+      <dt><%= Spree.t("oneclick_payment_type") %></dt>
+      <dd><%= payment.oneclick_params_payment_type %></dd>
+
+      <dt><%= Spree.t("oneclick_payments_quota") %></dt>
+      <dd><%= payment.oneclick_params_shares_number %></dd>
+
+      <dt><%= Spree.t("oneclick_trx_date") %></dt>
+      <dd><%= DateTime.iso8601(payment.oneclick_params_authorization_date).to_s(:db) %></dd>
+
+      <dt><%= Spree.t("oneclick_card_number") %></dt>
+      <dd><%= payment.oneclick_params_card_number %></dd>
+
+      <dt><%= Spree.t("oneclick_auth_code") %></dt>
+      <dd><%= payment.oneclick_params_authorization_code %></dd>
+    </dl>
+  <% else %>
+    <%= content_tag(:span, payment.payment_method.name) %>
+  <% end %>
+<% end %>

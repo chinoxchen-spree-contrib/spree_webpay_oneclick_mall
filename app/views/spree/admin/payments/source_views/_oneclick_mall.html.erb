@@ -1,0 +1,25 @@
+<% if payment.respond_to?(:webpay_params) && payment.webpay_params.present? %>
+  <dl>
+    <dt><%= Spree.t("oneclick_trx_date") %>:</dt>
+    <dd><%= DateTime.iso8601(payment.oneclick_params_authorization_date).to_s(:db) %></dd>
+
+    <dt><%= Spree.t("oneclick_card_number") %>:</dt>
+    <dd><%= payment.oneclick_params_card_number %></dd>
+
+    <dt><%= Spree.t("oneclick_card_type") %>:</dt>
+    <dd><%= payment.oneclick_params_card_type %></dd>
+
+    <dt><%= Spree.t("oneclick_auth_code") %>:</dt>
+    <dd><%= payment.oneclick_params_authorization_code %></dd>
+
+    <dt><%= Spree.t("oneclick_payment_type") %>:</dt>
+    <dd><%= payment.oneclick_params_payment_type %></dd>
+
+    <dt><%= Spree.t("oneclick_payments_quota") %>:</dt>
+    <dd><%= payment.oneclick_params_shares_number %></dd>
+
+    <dt><%= Spree.t("oneclick_params_commerce") %>:</dt>
+    <dd><%= payment.oneclick_params_commerce_code %></dd>
+
+  </dl>
+<% end %>

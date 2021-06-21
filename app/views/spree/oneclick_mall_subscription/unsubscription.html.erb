@@ -1,0 +1,41 @@
+<% if try_spree_current_user && (webpay_oneclick_mall_user = try_spree_current_user.webpay_oneclick_mall_user) && webpay_oneclick_mall_user.subscribed? %>
+  <div class="row">
+    <div class="col-md-12">
+      Tiene una subscripción válida para realizar pagos con Webpay Oneclick:
+      <dl>
+        <dt><%= Spree.t("oneclick_auth_code") %>:</dt>
+        <dd><%= webpay_oneclick_mall_user.authorization_code %></dd>
+
+        <dt><%= Spree.t("oneclick_card_type") %>:</dt>
+        <dd><%= webpay_oneclick_mall_user.card_type %></dd>
+
+        <dt><%= Spree.t("oneclick_card_number") %>:</dt>
+        <dd><%= webpay_oneclick_mall_user.card_number %></dd>
+
+        <dt><%= Spree.t("oneclick_card_expiration_date") %>:</dt>
+        <dd><%= webpay_oneclick_mall_user.card_expiration_date || "No disponible" %></dd>
+
+        <dt><%= Spree.t("oneclick_created_at") %>:</dt>
+        <dd><%= l(webpay_oneclick_mall_user.created_at, format: :default) %></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to Spree.t("oneclick_unsubscribe"), oneclick_mall_unsubscribe_path, class: "btn btn-warning" %>
+    </div>
+  </div>`
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>No tiene subscripción activa para realizar pagos con Webpay Oneclick.</p>
+      <p>Puede registrar una tarjeta en el siguiente link: </p>
+    </div>
+
+    <div class="col-md-4">
+      <%= form_for :subscribe, url: oneclick_mall_subscribe_path do |f| %>
+        <%= f.submit Spree.t("continue"), class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

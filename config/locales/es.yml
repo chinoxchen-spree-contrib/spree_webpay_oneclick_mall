@@ -1,0 +1,23 @@
+es:
+  spree:
+    oneclick_trx_date: "Fecha Transacción"
+    oneclick_card_number: "Número de Tarjeta"
+    oneclick_card_type: "Tipo de Tarjeta"
+    oneclick_auth_code: "Código de Autorización"
+    oneclick_payment_type: "Tipo de Pago"
+    oneclick_payments_quota: "Número de Cuotas"
+    oneclick_name_store: "Nombre Comercio"
+    oneclick_store_url: "Url Comercio"
+    oneclick_buyer_name: "Nombre de Comprador"
+    oneclick_order_number: "Número de Orden"
+    oneclick_payment_amount: "Monto Pagado"
+    oneclick_params_commerce: "Tienda"
+    oneclick_created_at: "Fecha Subscripción"
+    oneclick_card_expiration_date: "Expiración Tarjeta"
+    oneclick_unsubscribe: "Desvincular"
+    retry: "Reintentar"
+    continue: "Continuar"
+    back: "Volver"
+    oneclick_subscription: "Subscripción OneClick"
+
+

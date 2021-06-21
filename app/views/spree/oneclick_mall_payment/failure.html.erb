@@ -1,0 +1,34 @@
+<div id="checkout" data-hook>
+  <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+
+  <div class="row" data-hook="checkout_content">
+    <div class="col-md-9" data-hook="webpay_field_wrapper">
+        <fieldset id="billing" data-hook>
+          <legend align="center"><%= Spree.t(:payment_information) %></legend>
+
+          <h1> No se pudo asociar cuenta</h1>
+
+        </fieldset>
+
+        <hr class="clear" />
+
+        <div class="form-buttons" data-hook="buttons">
+          <%= link_to Spree.t(:previous), checkout_state_path('payment'), :class => 'continue button primary' %>
+          <script>Spree.disableSaveOnClick();</script>
+        </div>
+    </div>
+    <% unless @order.blank? %>
+      <% if @order.state != 'confirm' %>
+        <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega four">
+          <%= render :partial => 'spree/checkout/summary', :locals => { :order => @order } %>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+
+</div>
+
+<% if I18n.locale != :en %>
+  <script src="<%= assets_prefix %>/jquery.validate/localization/messages_<%= I18n.locale %>.js"></script>
+<% end %>
