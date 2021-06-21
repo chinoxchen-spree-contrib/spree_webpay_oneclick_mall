@@ -2,3 +2,39 @@
 Placeholder manifest file.
 the installer will append this file to the app vendored assets here: 'vendor/assets/stylesheets/spree/frontend/all.css'
 */
+
+.oneclick_mall_subscription {
+    background: #edf9f5 !important;
+}
+
+.oneclick_mall_subscription footer, .oneclick_mall_subscription .sub-header-spree, .oneclick_mall_subscription .special-info-header {
+    display: none !important;
+}
+
+.error-text {
+    color: #f33628;
+    font-size: 30px;
+}
+
+.success-text {
+    color: #00c686;
+    font-size: 30px;
+}
+
+dt {
+    clear: left;
+    float: left;
+    font-size: 12px;
+    line-height: 26px;
+    width: 50%;
+    text-align: left;
+}
+
+dd {
+    clear: right;
+    font-size: 12px;
+    line-height: 18px;
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+}
