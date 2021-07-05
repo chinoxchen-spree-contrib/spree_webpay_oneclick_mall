@@ -14,32 +14,31 @@ module Spree
                 return
               end
               payment_method = Spree::PaymentMethod.where(type: 'Spree::PaymentMethod::WebpayOneclickMall').first
-              payment = oneclick_create_payment(payment_method)
-              if pay(payment_method, payment)
+              oneclick_create_payment(payment_method)
+
+              if pay(payment_method)
                 render json: { success: true, message: @response }
               else
                 render json: { success: false, message: @response }
               end
+
             rescue StandardError => e
               oneclick_error(e)
             end
 
             def oneclick_create_payment(payment_method)
-              payment = @order.payments.build(payment_method_id: payment_method.id, amount: @order.total, state: 'checkout')
+              @payment = @order.payments.build(payment_method_id: payment_method.id, amount: @order.total, state: 'checkout')
 
-              unless payment.save
-                render json: { success: false, message: payment.errors.full_messages.join("\n") }
-                return
+              unless @payment.save
+                raise 'cant create payment ' + @payment.errors.full_messages.join("\n")
               end
 
-              unless payment.pend!
-                render json: { success: false, message: payment.errors.full_messages.join("\n") }
-                return
+              unless @payment.pend!
+                raise 'cant create pend ' + @payment.errors.full_messages.join("\n")
               end
-              return payment
             end
 
-            def pay(payment_method, payment)
+            def pay(payment_method)
               unless @order.user && @order.user.webpay_oneclick_mall_user && @order.user.webpay_oneclick_mall_user.subscribed?
                 redirect_to oneclick_mall_subscription_path and return
               end
@@ -54,22 +53,20 @@ module Spree
                 @order.number,
                 @order.webpay_amount,
                 shares_number,
-                payment.number)
+                @payment.number)
 
               @response = oneclick_authotize.details
 
               if oneclick_authotize.details.first['status'] == 'AUTHORIZED' && oneclick_authotize.details.first['response_code'].zero?
-                payment.complete!
+                @payment.complete!
                 @order.skip_stock_validation = true
                 @order.next! unless @order.state == "completed"
 
                 return true
               else
-                payment.failure!
+                @payment.failure!
                 return false
               end
-            rescue StandardError => e
-              oneclick_error(e)
             end
 
             def oneclick_error(e = nil)
