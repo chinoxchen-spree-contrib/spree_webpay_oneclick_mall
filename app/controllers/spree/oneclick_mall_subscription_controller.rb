@@ -2,6 +2,9 @@ module Spree
   class OneclickMallSubscriptionController < StoreController
     skip_before_action :verify_authenticity_token
 
+    layout false, only: [:m_subscribe_failure, :m_subscribe_success]
+
+
     def subscription; end
 
     def subscribe
@@ -19,9 +22,9 @@ module Spree
 
       if init_subscription.token.present? && init_subscription.url_webpay.present?
         if user.webpay_oneclick_mall_user
-          user.webpay_oneclick_mall_user.update(token: init_subscription.token, subscribed: false)
+          user.webpay_oneclick_mall_user.update(token: init_subscription.token, subscribed: false, mobile: false)
         else
-          user.create_webpay_oneclick_mall_user(token: init_subscription.token)
+          user.create_webpay_oneclick_mall_user(token: init_subscription.token, mobile: false)
         end
         args = { TBK_TOKEN: init_subscription.token }
 
@@ -42,9 +45,18 @@ module Spree
             card_type: finish_inscription.card_type,
             card_number: finish_inscription.card_number
           )
-          redirect_to oneclick_mall_subscribe_success_path
+
+          if oneclick_user.mobile?
+            redirect_to oneclick_mall_m_subscribe_success_path
+          else
+            redirect_to oneclick_mall_subscribe_success_path
+          end
         else
-          redirect_to oneclick_mall_subscribe_failure_path
+          if oneclick_user.mobile?
+            redirect_to oneclick_mall_m_subscribe_failure_path
+          else
+            redirect_to oneclick_mall_subscribe_failure_path
+          end
         end
       else
         raise(ActiveRecord::RecordNotFound)
