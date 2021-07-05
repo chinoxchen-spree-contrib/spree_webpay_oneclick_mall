@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_webpay_oneclick_mall'
-  s.version     = '2.4.0'
+  s.version     = '2.4.1'
   s.summary     = 'Integration of WebpayOneClick Mall as a payment method in Spree'
   s.description = 'Gem for integrate WebpayOneClick Mall in Spree'
   s.required_ruby_version = '>= 2.7.1'
