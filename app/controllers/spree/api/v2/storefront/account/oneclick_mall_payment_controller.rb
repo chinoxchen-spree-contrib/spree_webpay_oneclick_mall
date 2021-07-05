@@ -15,7 +15,13 @@ module Spree
               end
               payment_method = Spree::PaymentMethod.where(type: 'Spree::PaymentMethod::WebpayOneclickMall').first
               payment = oneclick_create_payment(payment_method)
-              pay(payment_method, payment)
+              if pay(payment_method, payment)
+                render json: { success: true, message: @response }
+              else
+                render json: { success: false, message: @response }
+              end
+            rescue StandardError => e
+              oneclick_error(e)
             end
 
             def oneclick_create_payment(payment_method)
@@ -38,29 +44,29 @@ module Spree
                 redirect_to oneclick_mall_subscription_path and return
               end
 
-              provider = payment_method.provider.new
-              amount  = @order.webpay_amount
-              user = @order.user
-              oneclick_user = user.webpay_oneclick_mall_user
-              shares_number = 0
-              oneclick_authotize = provider.authorize(user.id,
+              provider            = payment_method.provider.new
+              amount              = @order.webpay_amount
+              user                = @order.user
+              oneclick_user       = user.webpay_oneclick_mall_user
+              shares_number       = 0
+              oneclick_authotize  = provider.authorize(user.id,
                 oneclick_user.tbk_user,
                 @order.number,
                 @order.webpay_amount,
                 shares_number,
                 payment.number)
 
+              @response = oneclick_authotize.details
+
               if oneclick_authotize.details.first['status'] == 'AUTHORIZED' && oneclick_authotize.details.first['response_code'].zero?
                 payment.complete!
                 @order.skip_stock_validation = true
                 @order.next! unless @order.state == "completed"
 
-                render json: { success: true }
-                return
+                return true
               else
                 payment.failure!
-                render json: { success: false }
-                return
+                return false
               end
             rescue StandardError => e
               oneclick_error(e)
