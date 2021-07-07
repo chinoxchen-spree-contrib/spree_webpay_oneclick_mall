@@ -2,7 +2,7 @@
 module Tbk
   module WebpayOneclickMall
     class Payment
-      def authorize username, tbk_user, buy_order, amount, parent_buy_order
+      def authorize username, tbk_user, buy_order, amount, shares_number, parent_buy_order
         payment_method = Spree::PaymentMethod.where(type: 'Spree::PaymentMethod::WebpayOneclickMall' ).first
 
         if Rails.env.production?
@@ -15,7 +15,8 @@ module Tbk
                     {
                       commerce_code: payment_method.preferences[:payment_commerce_code],
                       buy_order: buy_order,
-                      amount: amount
+                      amount: amount,
+                      installments_number: shares_number
                     }
                   ]
 

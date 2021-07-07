@@ -15,10 +15,12 @@ module Spree
       amount  = @order.webpay_amount
       user = @order.user
       oneclick_user = user.webpay_oneclick_mall_user
+      shares_number = 2
       oneclick_authotize = provider.authorize(user.id,
                                               oneclick_user.tbk_user,
                                               @order.number,
                                               @order.webpay_amount,
+                                              shares_number,
                                               @payment.number)
 
       if oneclick_authotize.details.first['status'] == 'AUTHORIZED' && oneclick_authotize.details.first['response_code'].zero?
