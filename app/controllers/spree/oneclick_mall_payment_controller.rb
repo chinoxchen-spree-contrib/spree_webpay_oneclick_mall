@@ -30,7 +30,7 @@ module Spree
 
         redirect_to oneclick_mall_success_path({payment_number: @payment.number}) and return
       else
-        payment.failure!
+        @payment.failure!
         redirect_to oneclick_mall_failure_path({payment_number: @payment.number}), alert: I18n.t('payment.transaction_error') and return
       end
     rescue StandardError => e
