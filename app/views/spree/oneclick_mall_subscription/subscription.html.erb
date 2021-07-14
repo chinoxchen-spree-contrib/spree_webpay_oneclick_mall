@@ -21,6 +21,7 @@
               </div>
               <div class="col-6">
                 <%= form_for :subscribe, url: oneclick_mall_subscribe_path do |f| %>
+                  <%= f.hidden_field  :back_url, value: request.referer %>
                   <%= f.submit Spree.t("continue"), class: "btn btn-primary  w-100 " %>
                 <% end %>
               </div>

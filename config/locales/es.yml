@@ -17,6 +17,7 @@ es:
     oneclick_unsubscribe: "Desvincular"
     retry: "Reintentar"
     continue: "Continuar"
+    continue_checkout: "Ir a pagar"
     back: "Volver"
     oneclick_subscription: "Subscripción OneClick"
 

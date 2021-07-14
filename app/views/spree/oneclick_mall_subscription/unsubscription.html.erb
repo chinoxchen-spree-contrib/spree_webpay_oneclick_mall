@@ -38,7 +38,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <%= link_to Spree.t("oneclick_unsubscribe"), oneclick_mall_unsubscribe_path, class: "btn btn-warning" %>
+              <%= link_to Spree.t("oneclick_unsubscribe"), oneclick_mall_unsubscribe_path(back_url: request.referer), class: "btn btn-warning" %>
             </div>
           </div>
 
@@ -64,6 +64,7 @@
           </div>
           <div class="col-md-12">
             <%= form_for :subscribe, url: oneclick_mall_subscribe_path do |f| %>
+              <%= f.hidden_field  :back_url, value: request.referer %>
               <%= f.submit Spree.t("continue"), class: "btn btn-primary" %>
             <% end %>
           </div>

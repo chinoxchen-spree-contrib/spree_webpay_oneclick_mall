@@ -2,8 +2,6 @@ module Spree
   class OneclickMallSubscriptionController < StoreController
     skip_before_action :verify_authenticity_token
 
-    layout false, only: [:m_subscribe_failure, :m_subscribe_success]
-
 
     def subscription; end
 
@@ -28,8 +26,17 @@ module Spree
         end
         args = { TBK_TOKEN: init_subscription.token }
 
+        set_back_url(params[:subscribe])
         redirect_to "#{init_subscription.url_webpay}?#{args.to_query}"
       end
+    end
+
+    def m_subscribe_failure
+      render layout: false
+    end
+
+    def m_subscribe_success
+      render layout: false
     end
 
     def subscribe_confirmation
@@ -64,6 +71,7 @@ module Spree
     end
 
     def unsubscribe
+      set_back_url(params)
       if try_spree_current_user
         webpay_oneclick_mall_user = try_spree_current_user.webpay_oneclick_mall_user
         webpay_oneclick_mall_user.destroy
@@ -74,6 +82,13 @@ module Spree
       end
     rescue
       render :unsubscribed
+    end
+
+    def set_back_url(params)
+      cookies[:back_url_oneclick] = params.present? && params[:back_url].present? ? params[:back_url] : checkout_state_path(:payment)
+      if cookies[:back_url_oneclick].include? 'unsubscribe'
+        cookies[:back_url_oneclick] = root_path
+      end
     end
   end
 end
