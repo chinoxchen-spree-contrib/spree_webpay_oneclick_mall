@@ -1,34 +1,48 @@
 <div id="checkout" data-hook>
   <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+  <style>.checkout-content-summary {background: #ffffff;}</style>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 offset-md-3">
+        <div class="row text-center card my-3 px-4 border p-3">
 
-  <div class="row" data-hook="checkout_content">
-    <div class="col-md-9" data-hook="webpay_field_wrapper">
-        <fieldset id="billing" data-hook>
-          <legend align="center"><%= Spree.t(:payment_information) %></legend>
+          <div class="row">
+            <div class="col-8 offset-2 col-md-4 offset-md-4">
+              <i class="fas fa-exclamation-circle error-text mt-2"></i>
+            </div>
+            <div class="col-md-12">
+              <h4 class="sans-serif my-3">No se pudo asociar la cuenta</h4>
+              <p>La subscripción a Oneclick no se pudo realizar en este momento. Reinténtelo y revise la información ingresada.</p>
+            </div>
+          </div>
+          <div class="row">
 
-          <h1> No se pudo asociar cuenta</h1>
+            <div data-hook="buttons" class="text-center w-100">
+              <%= link_to Spree.t(:retry), checkout_state_path('payment'), class: 'btn btn-primary' %>
+              <script>Spree.disableSaveOnClick();</script>
+            </div>
 
-        </fieldset>
-
-        <hr class="clear" />
-
-        <div class="form-buttons" data-hook="buttons">
-          <%= link_to Spree.t(:previous), checkout_state_path('payment'), :class => 'continue button primary' %>
-          <script>Spree.disableSaveOnClick();</script>
+          </div>
         </div>
+
+        <div class="row card my-3 px-4 border p-3">
+          <div class="col-12">
+            <% unless @order.blank? %>
+              <% if @order.state != 'confirm' %>
+                <div id="checkout-summary" data-hook="checkout_summary_box">
+                  <%= render :partial => 'spree/checkout/summary', :locals => { :order => @order } %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <% unless @order.blank? %>
-      <% if @order.state != 'confirm' %>
-        <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega four">
-          <%= render :partial => 'spree/checkout/summary', :locals => { :order => @order } %>
-        </div>
-      <% end %>
-    <% end %>
-
   </div>
-
 </div>
 
 <% if I18n.locale != :en %>
   <script src="<%= assets_prefix %>/jquery.validate/localization/messages_<%= I18n.locale %>.js"></script>
 <% end %>
+
