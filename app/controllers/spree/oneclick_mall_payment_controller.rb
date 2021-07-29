@@ -84,7 +84,7 @@ module Spree
     end
 
     def completion_route
-      spree.order_path(@order)
+      spree.order_path(id: @order.number)
     end
   end
 end
