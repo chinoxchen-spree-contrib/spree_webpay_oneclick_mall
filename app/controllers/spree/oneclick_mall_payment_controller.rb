@@ -30,6 +30,7 @@ module Spree
 
         redirect_to oneclick_mall_success_path({payment_number: @payment.number}) and return
       else
+        @payment.update_column(:response_code, oneclick_authotize.details.first['response_code'].to_s + oneclick_authotize.details.first['status'].to_s)
         @payment.failure!
         redirect_to oneclick_mall_failure_path({payment_number: @payment.number}), alert: I18n.t('payment.transaction_error') and return
       end
