@@ -12,11 +12,11 @@ module Spree::CheckoutControllerDecorator
     pm_id = params[:order][:payments_attributes].first[:payment_method_id]
     payment_method = Spree::PaymentMethod.find(pm_id)
 
-    unless @order.user && @order.user.webpay_oneclick_mall_user && @order.user.webpay_oneclick_mall_user.subscribed?
-      redirect_to oneclick_mall_subscription_path and return
-    end
-
     if payment_method && payment_method.kind_of?(Spree::PaymentMethod::WebpayOneclickMall)
+      unless @order.user && @order.user.webpay_oneclick_mall_user && @order.user.webpay_oneclick_mall_user.subscribed?
+        redirect_to oneclick_mall_subscription_path and return
+      end
+
       oneclick_create_payment(payment_method)
       redirect_to oneclick_mall_pay_path(permitted_params) and return
     end
