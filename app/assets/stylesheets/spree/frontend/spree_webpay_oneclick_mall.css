@@ -4,7 +4,7 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 */
 
 .oneclick_mall_subscription {
-    background: #edf9f5 !important;
+    background: #fafafa !important;
 }
 
 .oneclick_mall_subscription footer, .oneclick_mall_subscription .sub-header-spree, .oneclick_mall_subscription .special-info-header {
@@ -14,6 +14,11 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 .error-text {
     color: #f33628;
     font-size: 30px;
+}
+
+.webpay-loader {
+    max-width: 300px;
+    width: 100% !important;
 }
 
 .success-text {
