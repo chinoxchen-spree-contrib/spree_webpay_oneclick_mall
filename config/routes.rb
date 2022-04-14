@@ -34,10 +34,12 @@ Spree::Core::Engine.routes.draw do
     namespace :v2 do
       namespace :storefront do
         namespace :account do
-          post 'subscribe', to: 'oneclick_mall_subscription#subscribe', as:  :oneclick_mall_m_subscribe
-          get 'unsubscribe', to: 'oneclick_mall_subscription#unsubscribe', as:  :oneclick_mall_m_unsubscribe
-          get 'pay', to: 'oneclick_mall_payment#pay_with_webpay_oneclick_mall', as:  :oneclick_mall_m_pay
+          post 'subscribe', to: 'oneclick_mall_subscription#subscribe', as: :oneclick_mall_m_subscribe
+          get 'unsubscribe', to: 'oneclick_mall_subscription#unsubscribe', as: :oneclick_mall_m_unsubscribe
+          get 'pay', to: 'oneclick_mall_payment#pay_with_webpay_oneclick_mall', as: :oneclick_mall_m_pay
           get 'user', to: 'oneclick_mall_users#index', as:  :oneclick_mall_user
+          get 'v2pay', to: 'oneclick_mall_v2_payment#pay_with_webpay_oneclick_mall', as: :oneclick_mall_v2_m_pay
+          get 'order_status', to: 'oneclick_mall_payment#order_status', as: :oneclick_mall_m_order_status
         end
       end
     end
