@@ -28,7 +28,7 @@ module Spree
 
             def order_status
               @order = spree_current_order
-              render json: { success: true, message: @order.status }
+              render json: { success: true, message: @order.state }
             end
 
             def oneclick_create_payment(payment_method)
