@@ -5,7 +5,7 @@ module Spree
         module Account
           class OneclickMallV2PaymentController < ::Spree::Api::V2::ResourceController
             include Spree::Api::V2::Storefront::OrderConcern
-            before_action :ensure_order
+            before_action :ensure_order, except: [:order_status]
 
             def pay_with_webpay_oneclick_mall
               @order = spree_current_order
@@ -27,7 +27,17 @@ module Spree
             end
 
             def order_status
-              @order = spree_current_order
+              if params[:order_number].blank?
+                render json: { success: false, message: 'no order found' }, state: 404
+                return
+              end
+              @order = Spree::Order.find_by(number: params[:order_number])
+
+              if @order.blank?
+                render json: { success: false, message: 'no order found' }, state: 404
+                return
+              end
+
               render json: { success: true, message: @order.state }
             end
 
