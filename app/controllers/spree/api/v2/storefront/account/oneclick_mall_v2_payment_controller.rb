@@ -73,9 +73,9 @@ module Spree
               @response = oneclick_authotize.details
 
               if oneclick_authotize.details.first['status'] == 'AUTHORIZED' && oneclick_authotize.details.first['response_code'].zero?
-                if !@payment.completed?
-                  ConfirmPaymentJob.perform_later(@payment)
-                end
+                @payment.complete! if !@payment.completed?
+                ConfirmPaymentJob.perform_later(@payment.id)
+
                 return true
               else
                 @payment.update_column(:response_code, oneclick_authotize.details.first['response_code'].to_s)
