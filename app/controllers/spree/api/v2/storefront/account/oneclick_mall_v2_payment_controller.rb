@@ -38,7 +38,9 @@ module Spree
                 return
               end
 
-              render json: { success: true, message: @order.state }
+              res = @order.completed_at.present? ? 'complete' : 'pending'
+
+              render json: { success: true, message: res }
             end
 
             def oneclick_create_payment(payment_method)
