@@ -24,9 +24,14 @@ module Spree
                                               @payment.number)
 
       if oneclick_authotize.details.first['status'] == 'AUTHORIZED' && oneclick_authotize.details.first['response_code'].zero?
-        @payment.complete!
+        @payment.complete! if !@payment.completed?
         @order.skip_stock_validation = true
-        @order.next! unless @order.state == "completed"
+
+        ix = 0
+        while !@order.completed? && ix < 5
+          @order.next!
+          ix += 1
+        end
 
         redirect_to oneclick_mall_success_path({payment_number: @payment.number}) and return
       else
